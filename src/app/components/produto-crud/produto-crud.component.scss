@@ -1,0 +1,736 @@
+.container {
+  padding: 0;
+}
+
+// Header Section Styles
+.header-section {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.title-section {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.title-icon {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  i {
+    font-size: 2rem;
+    color: white;
+  }
+}
+
+.title-text {
+  .main-title {
+    color: white;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    margin: 0.5rem 0 0 0;
+    font-weight: 300;
+  }
+}
+
+.new-product-btn {
+  ::ng-deep {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    border: none !important;
+    padding: 0.75rem 1.5rem !important;
+    font-weight: 600 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+    transition: all 0.3s ease !important;
+    
+    &:hover {
+      transform: translateY(-2px) !important;
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4) !important;
+    }
+  }
+}
+
+// Content Section
+.content-section {
+  padding: 0 2rem 2rem 2rem;
+}
+
+// Table Styles
+.custom-table {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+
+  ::ng-deep .p-datatable-thead > tr > th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 600;
+    padding: 1.25rem 1rem;
+    border: none;
+  }
+
+  ::ng-deep .p-datatable-tbody > tr > td {
+    background-color: #fff;
+    padding: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  ::ng-deep .p-datatable-tbody > tr.indisponivel > td {
+    background-color: #fef2f2;
+    color: #b91c1c;
+  }
+
+  ::ng-deep .p-datatable-tbody > tr:hover > td {
+    background-color: #f8fafc !important;
+  }
+
+  ::ng-deep .p-tag-success {
+    background-color: #4caf50 !important;
+  }
+
+  ::ng-deep .p-tag-danger {
+    background-color: #f44336 !important;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.action-btn {
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  
+  &:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+  }
+}
+
+.view-btn {
+  ::ng-deep {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+    border: none !important;
+    
+    &:hover {
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4) !important;
+    }
+  }
+}
+
+.edit-btn {
+  ::ng-deep {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+    border: none !important;
+    
+    &:hover {
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4) !important;
+    }
+  }
+}
+
+.delete-btn {
+  ::ng-deep {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    border: none !important;
+    
+    &:hover {
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;
+    }
+  }
+}
+
+// Empty State
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.empty-icon {
+  margin-bottom: 1.5rem;
+  
+  i {
+    font-size: 4rem;
+    color: #9ca3af;
+  }
+}
+
+.empty-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.empty-description {
+  color: #6b7280;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.empty-action-btn {
+  ::ng-deep {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    border: none !important;
+    padding: 0.75rem 1.5rem !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4) !important;
+    }
+  }
+}
+
+// Dialog Styles
+::ng-deep .custom-dialog {
+  .p-dialog-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 12px 12px 0 0;
+    padding: 1.5rem 2rem;
+    border: none;
+    
+    .p-dialog-title {
+      font-weight: 600;
+      font-size: 1.25rem;
+    }
+    
+    .p-dialog-header-icon {
+      color: white;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
+  
+  .p-dialog-content {
+    padding: 0;
+    border: none;
+    background: white;
+  }
+  
+  .p-dialog-footer {
+    padding: 0;
+    border: none;
+    background: #f8fafc;
+    border-radius: 0 0 12px 12px;
+  }
+}
+
+// View Dialog Styles
+::ng-deep .custom-view-dialog {
+  .p-dialog-header {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: white;
+    border-radius: 12px 12px 0 0;
+    padding: 1.5rem 2rem;
+    border: none;
+    
+    .p-dialog-title {
+      font-weight: 600;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      
+      &:before {
+        content: "👁️";
+        font-size: 1.5rem;
+      }
+    }
+    
+    .p-dialog-header-icon {
+      color: white;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+      }
+    }
+  }
+  
+  .p-dialog-content {
+    padding: 0;
+    border: none;
+    background: white;
+  }
+  
+  .p-dialog-footer {
+    padding: 0;
+    border: none;
+    background: #f8fafc;
+    border-radius: 0 0 12px 12px;
+  }
+}
+
+.view-dialog-content {
+  padding: 2rem;
+}
+
+.product-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.product-icon {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.product-title {
+  h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #374151;
+  }
+}
+
+.product-id {
+  color: #9ca3af;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+.product-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  border-left: 4px solid #3b82f6;
+}
+
+.detail-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #374151;
+  
+  i {
+    color: #3b82f6;
+    font-size: 1.1rem;
+  }
+}
+
+.detail-value {
+  font-weight: 500;
+  color: #6b7280;
+  
+  &.price {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #059669;
+  }
+}
+
+.view-dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+}
+
+.close-btn {
+  ::ng-deep {
+    color: #6b7280 !important;
+    
+    &:hover {
+      background: #f3f4f6 !important;
+      color: #374151 !important;
+    }
+  }
+}
+
+.edit-from-view-btn {
+  ::ng-deep {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+    border: none !important;
+    padding: 0.75rem 1.5rem !important;
+    font-weight: 600 !important;
+    
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4) !important;
+    }
+  }
+}
+
+.dialog-content {
+  padding: 2rem;
+}
+
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+.label-icon {
+  color: #667eea;
+  font-size: 1rem;
+}
+
+.form-input {
+  ::ng-deep input {
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    
+    &:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+  }
+}
+
+.form-group-switch {
+  background: #f8fafc;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.switch-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.switch-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.switch-icon {
+  font-size: 1.5rem;
+  color: #9ca3af;
+  transition: all 0.3s ease;
+  
+  &.active {
+    color: #10b981;
+  }
+}
+
+.switch-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.switch-label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 1rem;
+}
+
+.switch-description {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.custom-switch {
+  ::ng-deep .p-inputswitch {
+    .p-inputswitch-slider {
+      background: #e5e7eb;
+      
+      &:before {
+        background: white;
+      }
+    }
+    
+    &.p-inputswitch-checked .p-inputswitch-slider {
+      background: #10b981;
+    }
+  }
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+}
+
+.cancel-btn {
+  ::ng-deep {
+    color: #6b7280 !important;
+    
+    &:hover {
+      background: #f3f4f6 !important;
+      color: #374151 !important;
+    }
+  }
+}
+
+.save-btn {
+  ::ng-deep {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    border: none !important;
+    padding: 0.75rem 1.5rem !important;
+    font-weight: 600 !important;
+    
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4) !important;
+    }
+  }
+}
+
+// Custom Delete Dialog Styles
+::ng-deep .custom-delete-dialog {
+  .p-dialog-header {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    border-radius: 12px 12px 0 0;
+    padding: 1.5rem 2rem;
+    border: none;
+    
+    .p-dialog-title {
+      font-weight: 600;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      
+      &:before {
+        content: "⚠️";
+        font-size: 1.5rem;
+      }
+    }
+    
+    .p-dialog-header-icon {
+      color: white;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+      }
+    }
+  }
+  
+  .p-dialog-content {
+    padding: 0;
+    border: none;
+    background: white;
+  }
+  
+  .p-dialog-footer {
+    padding: 0;
+    border: none;
+    background: #f8fafc;
+    border-radius: 0 0 12px 12px;
+  }
+}
+
+.delete-dialog-content {
+  padding: 2rem;
+  text-align: center;
+}
+
+.delete-icon-container {
+  margin-bottom: 1.5rem;
+}
+
+.delete-warning-icon {
+  font-size: 4rem;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  padding: 1.5rem;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-message {
+  max-width: 350px;
+  margin: 0 auto;
+}
+
+.delete-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #374151;
+  margin-bottom: 1rem;
+}
+
+.delete-description {
+  font-size: 1.1rem;
+  color: #6b7280;
+  line-height: 1.6;
+  margin: 0;
+  
+  strong {
+    color: #ef4444;
+    font-weight: 600;
+  }
+}
+
+.delete-dialog-footer {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+}
+
+.delete-cancel-btn {
+  ::ng-deep {
+    color: #6b7280 !important;
+    background: #e5e7eb !important;
+    border: none !important;
+    padding: 0.75rem 1.5rem !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    
+    &:hover {
+      background: #d1d5db !important;
+      color: #374151 !important;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+.delete-confirm-btn {
+  ::ng-deep {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    border: none !important;
+    padding: 0.75rem 1.5rem !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .title-section {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .content-section {
+    padding: 0 1rem 2rem 1rem;
+  }
+  
+  .header-section {
+    padding: 1.5rem;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .detail-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  ::ng-deep .custom-dialog,
+  ::ng-deep .custom-delete-dialog,
+  ::ng-deep .custom-view-dialog {
+    .p-dialog {
+      width: 95vw !important;
+      margin: 1rem;
+    }
+  }
+  
+  .dialog-content,
+  .delete-dialog-content,
+  .view-dialog-content {
+    padding: 1.5rem;
+  }
+  
+  .dialog-footer,
+  .delete-dialog-footer,
+  .view-dialog-footer {
+    flex-direction: column;
+    gap: 0.75rem;
+    
+    button {
+      width: 100%;
+    }
+  }
+}

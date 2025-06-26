@@ -1,0 +1,36 @@
+<p-toast></p-toast>
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+<div class="main-container">
+  <div class="header-section">
+    <div class="header-content">
+      <div class="header-info">
+        <i class="pi pi-shopping-cart header-icon"></i>
+        <div>
+          <h1 class="header-title">Sistema de Gerenciamento</h1>
+          <p class="header-subtitle">Controle completo dos seus produtos</p>
+        </div>
+      </div>
+      <div class="header-stats">
+        <div class="stat-card">
+          <i class="pi pi-box stat-icon"></i>
+          <div class="stat-info">
+            <span class="stat-number">{{ totalProdutos }}</span>
+            <span class="stat-label">Total de Produtos</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="pi pi-check-circle stat-icon success"></i>
+          <div class="stat-info">
+            <span class="stat-number">{{ produtosDisponiveis }}</span>
+            <span class="stat-label">Disponíveis</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="content-section">
+    <app-produto-crud (produtosChanged)="onProdutosChanged($event)"></app-produto-crud>
+  </div>
+</div>
