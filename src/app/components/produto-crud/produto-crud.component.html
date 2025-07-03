@@ -1,61 +1,13 @@
 <div class="container">
-  <div class="header-section">
-    <div class="header-content">
-      <div class="title-section">
-        <div class="title-icon">
-          <i class="pi pi-shopping-bag"></i>
-        </div>
-        <div class="title-text">
-          <h2 class="main-title">Gerenciador de Produtos</h2>
-          <p class="subtitle">Gerencie seu catálogo de produtos de forma simples e eficiente</p>
-        </div>
-      </div>
-      
-      <button pButton label="Novo Produto" icon="pi pi-plus" 
-              class="p-button-sm p-button-success new-product-btn" 
-              (click)="abrirDialogoParaCriar()">
-      </button>
-    </div>
-  </div>
-
   <div class="content-section">
-    <p-table [value]="produtos" *ngIf="produtos.length > 0" class="custom-table">
-      <ng-template pTemplate="header">
-        <tr>
-          <th>Nome</th>
-          <th>Preço</th>
-          <th>Status</th>
-          <th>Ações</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-produto>
-        <tr [ngClass]="{'indisponivel': !produto.disponivel}">
-          <td>{{ produto.nome }}</td>
-          <td>{{ produto.preco | currency:'BRL' }}</td>
-          <td>
-            <p-tag [value]="produto.disponivel ? 'Disponível' : 'Indisponível'"
-                   [severity]="produto.disponivel ? 'success' : 'danger'">
-            </p-tag>
-          </td>
-          <td>
-            <div class="action-buttons">
-              <button pButton icon="pi pi-eye" 
-                      class="p-button-sm p-button-info action-btn view-btn" 
-                      pTooltip="Visualizar detalhes" tooltipPosition="top"
-                      (click)="visualizarProduto(produto)"></button>
-              <button pButton icon="pi pi-pencil" 
-                      class="p-button-sm p-button-warning action-btn edit-btn" 
-                      pTooltip="Editar produto" tooltipPosition="top"
-                      (click)="abrirDialogoParaEditar(produto)"></button>
-              <button pButton icon="pi pi-trash" 
-                      class="p-button-sm p-button-danger action-btn delete-btn" 
-                      pTooltip="Excluir produto" tooltipPosition="top"
-                      (click)="confirmarExclusao(produto.id!)"></button>
-            </div>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
+    <!-- Componente de Lista -->
+    <app-produto-list 
+      [produtos]="produtos"
+      (criar)="onCriar()"
+      (visualizar)="onVisualizar($event)"
+      (editar)="onEditar($event)"
+      (excluir)="onExcluir($event)">
+    </app-produto-list>
 
     <div class="empty-state" *ngIf="produtos.length === 0">
       <div class="empty-icon">
@@ -65,158 +17,30 @@
       <p class="empty-description">Comece criando seu primeiro produto clicando no botão "Novo Produto"</p>
       <button pButton label="Criar Primeiro Produto" icon="pi pi-plus" 
               class="p-button-success empty-action-btn" 
-              (click)="abrirDialogoParaCriar()">
+              (click)="onCriar()">
       </button>
     </div>
   </div>
 
-  <!-- Dialog de Criar/Editar -->
-  <p-dialog [(visible)]="displayDialog" [modal]="true" [header]="isNew ? 'Novo Produto' : 'Editar Produto'" 
-          [style]="{width: '500px'}" [draggable]="false" [resizable]="false" styleClass="custom-dialog">
-  
-  <div class="dialog-content">
-    <div class="form-grid">
-      <div class="form-group">
-        <label for="nome" class="form-label">
-          <i class="pi pi-tag label-icon"></i>
-          Nome do Produto
-        </label>
-        <input id="nome" type="text" pInputText [(ngModel)]="produto.nome" 
-               class="form-input" placeholder="Digite o nome do produto" />
-      </div>
+  <!-- Componente de Formulário -->
+  <app-produto-form
+    [(visible)]="showFormDialog"
+    [produto]="produtoSelecionado"
+    [isNew]="isNew"
+    (salvar)="onSalvarProduto($event)">
+  </app-produto-form>
 
-      <div class="form-group">
-        <label for="preco" class="form-label">
-          <i class="pi pi-dollar label-icon"></i>
-          Preço
-        </label>
-        <p-inputNumber inputId="preco" [(ngModel)]="produto.preco" 
-                       mode="currency" currency="BRL" locale="pt-BR"
-                       class="form-input" placeholder="0,00"></p-inputNumber>
-      </div>
+  <!-- Componente de Detalhes -->
+  <app-produto-detail
+    [(visible)]="showDetailDialog"
+    [produto]="produtoSelecionado"
+    (editar)="onEditarDoDetalhe($event)">
+  </app-produto-detail>
 
-      <div class="form-group-switch">
-        <div class="switch-container">
-          <div class="switch-info">
-            <i class="pi pi-check-circle switch-icon" [class.active]="produto.disponivel"></i>
-            <div class="switch-text">
-              <span class="switch-label">Disponibilidade</span>
-              <span class="switch-description">{{ produto.disponivel ? 'Produto disponível para venda' : 'Produto indisponível' }}</span>
-            </div>
-          </div>
-          <p-inputSwitch [(ngModel)]="produto.disponivel" class="custom-switch"></p-inputSwitch>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <ng-template pTemplate="footer">
-    <div class="dialog-footer">
-      <button pButton label="Cancelar" icon="pi pi-times" 
-              class="p-button-text p-button-secondary cancel-btn" 
-              (click)="displayDialog=false"></button>
-      <button pButton [label]="isNew ? 'Criar Produto' : 'Salvar Alterações'" 
-              icon="pi pi-check" 
-              class="p-button-success save-btn" 
-              (click)="salvarProduto()"></button>
-    </div>
-  </ng-template>
-</p-dialog>
-
-<!-- Dialog de Visualização/Detalhes -->
-<p-dialog [(visible)]="displayViewDialog" [modal]="true" header="Detalhes do Produto" 
-        [style]="{width: '500px'}" [draggable]="false" [resizable]="false" styleClass="custom-view-dialog">
-
-<div class="view-dialog-content" *ngIf="produtoSelecionado">
-  <div class="product-header">
-    <div class="product-icon">
-      <i class="pi pi-box"></i>
-    </div>
-    <div class="product-title">
-      <h3>{{ produtoSelecionado.nome }}</h3>
-      <span class="product-id">ID: #{{ produtoSelecionado.id }}</span>
-    </div>
-  </div>
-
-  <div class="product-details">
-    <div class="detail-item">
-      <div class="detail-label">
-        <i class="pi pi-tag"></i>
-        <span>Nome do Produto</span>
-      </div>
-      <div class="detail-value">{{ produtoSelecionado.nome }}</div>
-    </div>
-
-    <div class="detail-item">
-      <div class="detail-label">
-        <i class="pi pi-dollar"></i>
-        <span>Preço</span>
-      </div>
-      <div class="detail-value price">{{ produtoSelecionado.preco | currency:'BRL' }}</div>
-    </div>
-
-    <div class="detail-item">
-      <div class="detail-label">
-        <i class="pi pi-info-circle"></i>
-        <span>Status</span>
-      </div>
-      <div class="detail-value">
-        <p-tag [value]="produtoSelecionado.disponivel ? 'Disponível' : 'Indisponível'"
-               [severity]="produtoSelecionado.disponivel ? 'success' : 'danger'">
-        </p-tag>
-      </div>
-    </div>
-
-    <div class="detail-item">
-      <div class="detail-label">
-        <i class="pi pi-calendar"></i>
-        <span>Data de Cadastro</span>
-      </div>
-      <div class="detail-value">{{ dataAtual | date:'dd/MM/yyyy HH:mm' }}</div>
-    </div>
-  </div>
-</div>
-
-<ng-template pTemplate="footer">
-  <div class="view-dialog-footer">
-    <button pButton label="Fechar" icon="pi pi-times" 
-            class="p-button-text p-button-secondary close-btn" 
-            (click)="displayViewDialog=false"></button>
-    <button pButton label="Editar Produto" icon="pi pi-pencil" 
-            class="p-button-warning edit-from-view-btn" 
-            (click)="editarDaVisualizacao()"></button>
-  </div>
-</ng-template>
-</p-dialog>
-
-<!-- Dialog de Confirmação de Exclusão -->
-<p-dialog [(visible)]="displayDeleteDialog" [modal]="true" header="Confirmação de Exclusão" 
-        [style]="{width: '450px'}" [draggable]="false" [resizable]="false" styleClass="custom-delete-dialog">
-
-<div class="delete-dialog-content">
-  <div class="delete-icon-container">
-    <i class="pi pi-exclamation-triangle delete-warning-icon"></i>
-  </div>
-  
-  <div class="delete-message">
-    <h3 class="delete-title">Tem certeza?</h3>
-    <p class="delete-description">
-      Você está prestes a excluir o produto <strong>"{{ produtoParaExcluir?.nome }}"</strong>.
-      <br><br>
-      Esta ação não pode ser desfeita.
-    </p>
-  </div>
-</div>
-
-<ng-template pTemplate="footer">
-  <div class="delete-dialog-footer">
-    <button pButton label="Cancelar" icon="pi pi-times" 
-            class="p-button-text p-button-secondary delete-cancel-btn" 
-            (click)="displayDeleteDialog=false"></button>
-    <button pButton label="Sim, excluir" icon="pi pi-trash" 
-            class="p-button-danger delete-confirm-btn" 
-            (click)="confirmarExclusaoFinal()"></button>
-  </div>
-</ng-template>
-</p-dialog>
+  <!-- Componente de Exclusão -->
+  <app-produto-delete
+    [(visible)]="showDeleteDialog"
+    [produto]="produtoSelecionado"
+    (confirmar)="onConfirmarExclusao($event)">
+  </app-produto-delete>
 </div>

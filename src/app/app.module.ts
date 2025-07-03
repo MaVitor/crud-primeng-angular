@@ -1,33 +1,41 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { NgModule } from "@angular/core"
+import { BrowserModule } from "@angular/platform-browser"
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
+import { FormsModule } from "@angular/forms"
 
 // Módulos do PrimeNG
-import { TableModule } from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { InputSwitchModule } from 'primeng/inputswitch';
-import { ToastModule } from 'primeng/toast';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { CardModule } from 'primeng/card';         // <-- NOVO
-import { TagModule } from 'primeng/tag';           // <-- NOVO
-import { TooltipModule } from 'primeng/tooltip';   // <-- NOVO
-import { MessagesModule } from 'primeng/messages';
-import { MessageModule } from 'primeng/message';
+import { TableModule } from "primeng/table"
+import { ButtonModule } from "primeng/button"
+import { DialogModule } from "primeng/dialog"
+import { InputTextModule } from "primeng/inputtext"
+import { InputNumberModule } from "primeng/inputnumber"
+import { InputSwitchModule } from "primeng/inputswitch"
+import { ToastModule } from "primeng/toast"
+import { ConfirmDialogModule } from "primeng/confirmdialog"
+import { CardModule } from "primeng/card"
+import { TagModule } from "primeng/tag"
+import { TooltipModule } from "primeng/tooltip"
+import { MessagesModule } from "primeng/messages"
+import { MessageModule } from "primeng/message"
 
 // Serviços do PrimeNG
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { MessageService, ConfirmationService } from "primeng/api"
 
-import { AppComponent } from './app.component';
-import { ProdutoCrudComponent } from './components/produto-crud/produto-crud.component';
+import { AppComponent } from "./app.component"
+import { ProdutoCrudComponent } from "./components/produto-crud/produto-crud.component"
+import { ProdutoListComponent } from "./components/produto-list/produto-list.component"
+import { ProdutoFormComponent } from "./components/produto-form/produto-form.component"
+import { ProdutoDetailComponent } from "./components/produto-detail/produto-detail.component"
+import { ProdutoDeleteComponent } from "./components/produto-delete/produto-delete.component"
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProdutoCrudComponent
+    ProdutoCrudComponent,
+    ProdutoListComponent,
+    ProdutoFormComponent,
+    ProdutoDetailComponent,
+    ProdutoDeleteComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,13 +52,10 @@ import { ProdutoCrudComponent } from './components/produto-crud/produto-crud.com
     CardModule,
     TagModule,
     TooltipModule,
-    MessageModule,      // 👈 Adicione isso
-    MessagesModule
+    MessageModule,
+    MessagesModule,
   ],
-  providers: [
-    MessageService,
-    ConfirmationService
-  ],
-  bootstrap: [AppComponent]
+  providers: [MessageService, ConfirmationService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,0 +1,30 @@
+<p-dialog [(visible)]="visible" [modal]="true" header="Confirmação de Exclusão" 
+          [style]="{width: '450px'}" [draggable]="false" [resizable]="false" 
+          styleClass="custom-delete-dialog">
+
+  <div class="delete-dialog-content">
+    <div class="delete-icon-container">
+      <i class="pi pi-exclamation-triangle delete-warning-icon"></i>
+    </div>
+    
+    <div class="delete-message">
+      <h3 class="delete-title">Tem certeza?</h3>
+      <p class="delete-description">
+        Você está prestes a excluir o produto <strong>"{{ produto?.nome }}"</strong>.
+        <br><br>
+        Esta ação não pode ser desfeita.
+      </p>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="delete-dialog-footer">
+      <button pButton label="Cancelar" icon="pi pi-times" 
+              class="p-button-text p-button-secondary delete-cancel-btn" 
+              (click)="onCancelar()"></button>
+      <button pButton label="Sim, excluir" icon="pi pi-trash" 
+              class="p-button-danger delete-confirm-btn" 
+              (click)="onConfirmar()"></button>
+    </div>
+  </ng-template>
+</p-dialog>
