@@ -2,6 +2,10 @@
   padding: 0;
 }
 
+.crud-container {
+  padding: 0;
+}
+
 // Header Section Styles
 .header-section {
   background: rgba(255, 255, 255, 0.1);
@@ -163,6 +167,7 @@
     border: none !important;
     
     &:hover {
+      transform: translateY(-2px) !important;
       box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;
     }
   }

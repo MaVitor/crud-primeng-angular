@@ -1,0 +1,53 @@
+<p-dialog [(visible)]="visible" [modal]="true" 
+          [header]="isNew ? 'Novo Produto' : 'Editar Produto'" 
+          [style]="{width: '500px'}" [draggable]="false" [resizable]="false" 
+          styleClass="custom-dialog">
+  
+  <div class="dialog-content">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="nome" class="form-label">
+          <i class="pi pi-tag label-icon"></i>
+          Nome do Produto
+        </label>
+        <input id="nome" type="text" pInputText [(ngModel)]="produtoForm.nome" 
+               class="form-input" placeholder="Digite o nome do produto" />
+      </div>
+
+      <div class="form-group">
+        <label for="preco" class="form-label">
+          <i class="pi pi-dollar label-icon"></i>
+          Preço
+        </label>
+        <p-inputNumber inputId="preco" [(ngModel)]="produtoForm.preco" 
+                       mode="currency" currency="BRL" locale="pt-BR"
+                       class="form-input" placeholder="0,00"></p-inputNumber>
+      </div>
+
+      <div class="form-group-switch">
+        <div class="switch-container">
+          <div class="switch-info">
+            <i class="pi pi-check-circle switch-icon" [class.active]="produtoForm.disponivel"></i>
+            <div class="switch-text">
+              <span class="switch-label">Disponibilidade</span>
+              <span class="switch-description">{{ produtoForm.disponivel ? 'Produto disponível para venda' : 'Produto indisponível' }}</span>
+            </div>
+          </div>
+          <p-inputSwitch [(ngModel)]="produtoForm.disponivel" class="custom-switch"></p-inputSwitch>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="dialog-footer">
+      <button pButton label="Cancelar" icon="pi pi-times" 
+              class="p-button-text p-button-secondary cancel-btn" 
+              (click)="onCancelar()"></button>
+      <button pButton [label]="isNew ? 'Criar Produto' : 'Salvar Alterações'" 
+              icon="pi pi-check" 
+              class="p-button-success save-btn" 
+              (click)="onSalvar()"></button>
+    </div>
+  </ng-template>
+</p-dialog>

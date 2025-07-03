@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core"
-import { ConfirmationService, MessageService } from "primeng/api"
+import { MessageService } from "primeng/api"
 import { Produto } from "../../models/produto"
 import { ProdutoService } from "../../services/produto.service"
 
@@ -11,24 +11,19 @@ import { ProdutoService } from "../../services/produto.service"
 })
 export class ProdutoCrudComponent implements OnInit {
   produtos: Produto[] = []
-  produto: Produto = this.criarProdutoVazio()
   produtoSelecionado: Produto | null = null
-  displayDialog = false
-  displayViewDialog = false
+
+  // Estados dos dialogs
+  showFormDialog = false
+  showDetailDialog = false
+  showDeleteDialog = false
   isNew = true
-
-  displayDeleteDialog = false
-  produtoParaExcluir: Produto | null = null
-
-  // Propriedade para a data atual
-  dataAtual = new Date()
 
   @Output() produtosChanged = new EventEmitter<Produto[]>()
 
   constructor(
     private produtoService: ProdutoService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService,
   ) {}
 
   ngOnInit(): void {
@@ -40,97 +35,71 @@ export class ProdutoCrudComponent implements OnInit {
     this.produtosChanged.emit(this.produtos)
   }
 
-  criarProdutoVazio(): Produto {
-    return { nome: "", preco: 0, disponivel: true }
-  }
-
-  abrirDialogoParaCriar(): void {
-    this.produto = this.criarProdutoVazio()
+  // Eventos da lista
+  onCriar(): void {
+    this.produtoSelecionado = null
     this.isNew = true
-    this.displayDialog = true
+    this.showFormDialog = true
   }
 
-  abrirDialogoParaEditar(produto: Produto): void {
-    this.produto = { ...produto }
+  onVisualizar(produto: Produto): void {
+    this.produtoSelecionado = produto
+    this.showDetailDialog = true
+  }
+
+  onEditar(produto: Produto): void {
+    this.produtoSelecionado = produto
     this.isNew = false
-    this.displayDialog = true
+    this.showFormDialog = true
   }
 
-  visualizarProduto(produto: Produto): void {
-    this.produtoSelecionado = { ...produto }
-    this.displayViewDialog = true
+  onExcluir(id: number): void {
+    this.produtoSelecionado = this.produtos.find((p) => p.id === id) || null
+    this.showDeleteDialog = true
   }
 
-  editarDaVisualizacao(): void {
-    if (this.produtoSelecionado) {
-      this.displayViewDialog = false
-
-      // Aguarda o fechamento do modal antes de abrir o outro
-      setTimeout(() => {
-        this.abrirDialogoParaEditar(this.produtoSelecionado!)
-      }, 300)
-    }
-  }
-
-  salvarProduto(): void {
-    if (!this.produto.nome.trim()) {
-      this.messageService.add({
-        severity: "warn",
-        summary: "Atenção",
-        detail: "Nome do produto é obrigatório!",
-      })
-      return
-    }
-
-    if (this.produto.preco <= 0) {
-      this.messageService.add({
-        severity: "warn",
-        summary: "Atenção",
-        detail: "Preço deve ser maior que zero!",
-      })
-      return
-    }
-
+  // Eventos do formulário
+  onSalvarProduto(produto: Produto): void {
     if (this.isNew) {
-      this.produtoService.addProduto(this.produto)
+      this.produtoService.addProduto(produto)
       this.messageService.add({
         severity: "success",
         summary: "Sucesso",
-        detail: `Produto "${this.produto.nome}" criado com sucesso!`,
+        detail: `Produto "${produto.nome}" criado com sucesso!`,
         life: 4000,
       })
     } else {
-      this.produtoService.updateProduto(this.produto)
+      this.produtoService.updateProduto(produto)
       this.messageService.add({
         severity: "success",
         summary: "Sucesso",
-        detail: `Produto "${this.produto.nome}" atualizado com sucesso!`,
+        detail: `Produto "${produto.nome}" atualizado com sucesso!`,
         life: 4000,
       })
     }
-
-    this.displayDialog = false
     this.carregarProdutos()
   }
 
-  confirmarExclusao(id: number): void {
-    const produto = this.produtos.find((p) => p.id === id)
-    this.produtoParaExcluir = produto || null
-    this.displayDeleteDialog = true
-  }
+  // Eventos de exclusão
+  onConfirmarExclusao(id: number): void {
+    this.produtoService.deleteProduto(id)
+    this.carregarProdutos()
 
-  confirmarExclusaoFinal(): void {
-    if (this.produtoParaExcluir?.id) {
-      this.produtoService.deleteProduto(this.produtoParaExcluir.id)
-      this.carregarProdutos()
+    if (this.produtoSelecionado) {
       this.messageService.add({
         severity: "success",
         summary: "Produto Excluído",
-        detail: `"${this.produtoParaExcluir.nome}" foi removido com sucesso!`,
+        detail: `"${this.produtoSelecionado.nome}" foi removido com sucesso!`,
         life: 4000,
       })
     }
-    this.displayDeleteDialog = false
-    this.produtoParaExcluir = null
+  }
+
+  // Evento de edição a partir dos detalhes
+  onEditarDoDetalhe(produto: Produto): void {
+    this.showDetailDialog = false
+    setTimeout(() => {
+      this.onEditar(produto)
+    }, 300)
   }
 }

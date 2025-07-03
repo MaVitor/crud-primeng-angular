@@ -1,0 +1,65 @@
+<p-dialog [(visible)]="visible" [modal]="true" header="Detalhes do Produto" 
+          [style]="{width: '500px'}" [draggable]="false" [resizable]="false" 
+          styleClass="custom-view-dialog">
+
+  <div class="view-dialog-content" *ngIf="produto">
+    <div class="product-header">
+      <div class="product-icon">
+        <i class="pi pi-box"></i>
+      </div>
+      <div class="product-title">
+        <h3>{{ produto.nome }}</h3>
+        <span class="product-id">ID: #{{ produto.id }}</span>
+      </div>
+    </div>
+
+    <div class="product-details">
+      <div class="detail-item">
+        <div class="detail-label">
+          <i class="pi pi-tag"></i>
+          <span>Nome do Produto</span>
+        </div>
+        <div class="detail-value">{{ produto.nome }}</div>
+      </div>
+
+      <div class="detail-item">
+        <div class="detail-label">
+          <i class="pi pi-dollar"></i>
+          <span>Preço</span>
+        </div>
+        <div class="detail-value price">{{ produto.preco | currency:'BRL' }}</div>
+      </div>
+
+      <div class="detail-item">
+        <div class="detail-label">
+          <i class="pi pi-info-circle"></i>
+          <span>Status</span>
+        </div>
+        <div class="detail-value">
+          <p-tag [value]="produto.disponivel ? 'Disponível' : 'Indisponível'"
+                 [severity]="produto.disponivel ? 'success' : 'danger'">
+          </p-tag>
+        </div>
+      </div>
+
+      <div class="detail-item">
+        <div class="detail-label">
+          <i class="pi pi-calendar"></i>
+          <span>Data de Visualização</span>
+        </div>
+        <div class="detail-value">{{ dataAtual | date:'dd/MM/yyyy HH:mm' }}</div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="view-dialog-footer">
+      <button pButton label="Fechar" icon="pi pi-times" 
+              class="p-button-text p-button-secondary close-btn" 
+              (click)="onFechar()"></button>
+      <button pButton label="Editar Produto" icon="pi pi-pencil" 
+              class="p-button-warning edit-from-view-btn" 
+              (click)="onEditar()"></button>
+    </div>
+  </ng-template>
+</p-dialog>
