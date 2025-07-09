@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core"
 import { MessageService } from "primeng/api"
 import { Produto } from "../../models/produto"
-import { ProdutoService } from "../../services/produto.service"
+import { ProdutoHttpService } from "../../services/produto-http.service" // Alterar esta linha
 
 @Component({
   selector: "app-produto-crud",
@@ -22,7 +22,7 @@ export class ProdutoCrudComponent implements OnInit {
   @Output() produtosChanged = new EventEmitter<Produto[]>()
 
   constructor(
-    private produtoService: ProdutoService,
+    private produtoHttpService: ProdutoHttpService, // Alterar esta linha
     private messageService: MessageService,
   ) {}
 
@@ -31,11 +31,54 @@ export class ProdutoCrudComponent implements OnInit {
   }
 
   carregarProdutos(): void {
-    this.produtos = this.produtoService.getProdutos()
-    this.produtosChanged.emit(this.produtos)
+    this.produtoHttpService.getProdutos().subscribe((produtos) => {
+      this.produtos = produtos
+      this.produtosChanged.emit(this.produtos)
+    })
   }
 
-  // Eventos da lista
+  // Eventos do formulário
+  onSalvarProduto(produto: Produto): void {
+    if (this.isNew) {
+      this.produtoHttpService.addProduto(produto).subscribe((novoProduto) => {
+        this.messageService.add({
+          severity: "success",
+          summary: "Sucesso",
+          detail: `Produto "${produto.nome}" criado com sucesso!`,
+          life: 4000,
+        })
+        this.carregarProdutos()
+      })
+    } else {
+      this.produtoHttpService.updateProduto(produto).subscribe(() => {
+        this.messageService.add({
+          severity: "success",
+          summary: "Sucesso",
+          detail: `Produto "${produto.nome}" atualizado com sucesso!`,
+          life: 4000,
+        })
+        this.carregarProdutos()
+      })
+    }
+  }
+
+  // Eventos de exclusão
+  onConfirmarExclusao(id: number): void {
+    this.produtoHttpService.deleteProduto(id).subscribe(() => {
+      this.carregarProdutos()
+
+      if (this.produtoSelecionado) {
+        this.messageService.add({
+          severity: "success",
+          summary: "Produto Excluído",
+          detail: `"${this.produtoSelecionado.nome}" foi removido com sucesso!`,
+          life: 4000,
+        })
+      }
+    })
+  }
+
+  // Resto dos métodos permanecem iguais...
   onCriar(): void {
     this.produtoSelecionado = null
     this.isNew = true
@@ -58,44 +101,6 @@ export class ProdutoCrudComponent implements OnInit {
     this.showDeleteDialog = true
   }
 
-  // Eventos do formulário
-  onSalvarProduto(produto: Produto): void {
-    if (this.isNew) {
-      this.produtoService.addProduto(produto)
-      this.messageService.add({
-        severity: "success",
-        summary: "Sucesso",
-        detail: `Produto "${produto.nome}" criado com sucesso!`,
-        life: 4000,
-      })
-    } else {
-      this.produtoService.updateProduto(produto)
-      this.messageService.add({
-        severity: "success",
-        summary: "Sucesso",
-        detail: `Produto "${produto.nome}" atualizado com sucesso!`,
-        life: 4000,
-      })
-    }
-    this.carregarProdutos()
-  }
-
-  // Eventos de exclusão
-  onConfirmarExclusao(id: number): void {
-    this.produtoService.deleteProduto(id)
-    this.carregarProdutos()
-
-    if (this.produtoSelecionado) {
-      this.messageService.add({
-        severity: "success",
-        summary: "Produto Excluído",
-        detail: `"${this.produtoSelecionado.nome}" foi removido com sucesso!`,
-        life: 4000,
-      })
-    }
-  }
-
-  // Evento de edição a partir dos detalhes
   onEditarDoDetalhe(produto: Produto): void {
     this.showDetailDialog = false
     setTimeout(() => {
