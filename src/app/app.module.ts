@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core"
 import { BrowserModule } from "@angular/platform-browser"
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
 import { FormsModule } from "@angular/forms"
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http"
 
 // Módulos do PrimeNG
 import { TableModule } from "primeng/table"
@@ -55,7 +56,7 @@ import { ProdutoDeleteComponent } from "./components/produto-delete/produto-dele
     MessageModule,
     MessagesModule,
   ],
-  providers: [MessageService, ConfirmationService],
+  providers: [MessageService, ConfirmationService, provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
