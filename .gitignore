@@ -191,8 +191,11 @@ static_root/
 # PROJETO ESPECÍFICO
 # ========================================
 
-# Pasta do backend Django
-produtos-backend-django/
+# Backend Django - arquivos específicos a ignorar
+produtos-backend-django/venv/
+produtos-backend-django/__pycache__/
+produtos-backend-django/db.sqlite3
+produtos-backend-django/*.log
 
 # Logs personalizados
 *.log
