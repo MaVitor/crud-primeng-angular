@@ -1,0 +1,86 @@
+.form-container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+
+  .form-grid {
+    display: grid;
+    gap: 2rem;
+    margin-bottom: 3rem;
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      label {
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.9rem;
+      }
+
+      input, :host ::ng-deep .p-inputnumber {
+        width: 100%;
+      }
+
+      .status-field {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .status-label {
+          font-weight: 500;
+          color: #495057;
+        }
+      }
+
+      small.p-error {
+        color: #e74c3c;
+        font-size: 0.8rem;
+        margin-top: 0.25rem;
+      }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding-top: 2rem;
+    border-top: 1px solid #dee2e6;
+
+    button {
+      min-width: 140px;
+    }
+  }
+}
+
+:host ::ng-deep {
+  .p-inputtext, .p-inputnumber-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+
+    &:focus {
+      border-color: #3498db;
+      box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+    }
+
+    &.ng-invalid.ng-touched {
+      border-color: #e74c3c;
+      box-shadow: 0 0 0 0.2rem rgba(231, 76, 60, 0.25);
+    }
+  }
+
+  .p-inputswitch {
+    .p-inputswitch-slider {
+      background: #dee2e6;
+    }
+
+    &.p-inputswitch-checked .p-inputswitch-slider {
+      background: #27ae60;
+    }
+  }
+}

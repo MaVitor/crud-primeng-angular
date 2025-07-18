@@ -7,7 +7,7 @@ import { Component } from "@angular/core"
   standalone: false,
 })
 export class AppComponent {
-  title = "gerenciador-produtos-angular"
+  title = "Sistema de Gerenciamento de Produtos"
   totalProdutos = 0
   produtosDisponiveis = 0
 

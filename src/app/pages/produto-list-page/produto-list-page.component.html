@@ -1,0 +1,149 @@
+<div class="page-container">
+  <!-- Cabeçalho da página -->
+  <div class="page-header">
+    <div>
+      <h1>Gerenciamento de Produtos</h1>
+      <div class="breadcrumb">
+        <i class="pi pi-home"></i>
+        <span>Início / Produtos</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button 
+        pButton 
+        type="button" 
+        label="Novo Produto" 
+        icon="pi pi-plus"
+        class="p-button-success"
+        (click)="onCriarProduto()">
+      </button>
+    </div>
+  </div>
+
+  <!-- Conteúdo da página -->
+  <div class="page-content">
+    <!-- Estatísticas -->
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="pi pi-box"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number">{{ produtos.length }}</span>
+          <span class="stat-label">Total de Produtos</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon success">
+          <i class="pi pi-check-circle"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number">{{ getDisponiveisCount() }}</span>
+          <span class="stat-label">Disponíveis</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon warning">
+          <i class="pi pi-times-circle"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-number">{{ getIndisponiveisCount() }}</span>
+          <span class="stat-label">Indisponíveis</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabela de produtos -->
+    <div class="table-container">
+      <p-table 
+        [value]="produtos" 
+        [loading]="loading"
+        [paginator]="true" 
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} produtos"
+        [rowsPerPageOptions]="[5,10,25,50]"
+        styleClass="p-datatable-gridlines">
+        
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="id">
+              ID <p-sortIcon field="id"></p-sortIcon>
+            </th>
+            <th pSortableColumn="nome">
+              Nome <p-sortIcon field="nome"></p-sortIcon>
+            </th>
+            <th pSortableColumn="preco">
+              Preço <p-sortIcon field="preco"></p-sortIcon>
+            </th>
+            <th pSortableColumn="disponivel">
+              Status <p-sortIcon field="disponivel"></p-sortIcon>
+            </th>
+            <th>Ações</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-produto>
+          <tr>
+            <td>{{ produto.id }}</td>
+            <td>
+              <strong>{{ produto.nome }}</strong>
+            </td>
+            <td>
+              <span class="price">{{ produto.preco | currency:'BRL':'symbol':'1.2-2' }}</span>
+            </td>
+            <td>
+              <p-tag 
+                [value]="produto.disponivel ? 'Disponível' : 'Indisponível'"
+                [severity]="produto.disponivel ? 'success' : 'danger'">
+              </p-tag>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button 
+                  pButton 
+                  type="button" 
+                  icon="pi pi-eye"
+                  class="p-button-rounded p-button-info p-button-sm"
+                  pTooltip="Visualizar"
+                  tooltipPosition="top"
+                  (click)="onVisualizarProduto(produto)">
+                </button>
+                <button 
+                  pButton 
+                  type="button" 
+                  icon="pi pi-pencil"
+                  class="p-button-rounded p-button-warning p-button-sm"
+                  pTooltip="Editar"
+                  tooltipPosition="top"
+                  (click)="onEditarProduto(produto)">
+                </button>
+                <button 
+                  pButton 
+                  type="button" 
+                  icon="pi pi-trash"
+                  class="p-button-rounded p-button-danger p-button-sm"
+                  pTooltip="Excluir"
+                  tooltipPosition="top"
+                  (click)="onExcluirProduto(produto)">
+                </button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5" class="text-center">
+              <div class="empty-state">
+                <i class="pi pi-inbox empty-icon"></i>
+                <h3>Nenhum produto encontrado</h3>
+                <p>Clique em "Novo Produto" para adicionar o primeiro produto.</p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

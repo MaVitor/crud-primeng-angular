@@ -1,0 +1,131 @@
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+
+  .stat-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+    &:nth-child(2) {
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    }
+
+    &:nth-child(3) {
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+    }
+
+    .stat-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+
+      i {
+        font-size: 1.5rem;
+      }
+    }
+
+    .stat-info {
+      display: flex;
+      flex-direction: column;
+
+      .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      .stat-label {
+        font-size: 0.9rem;
+        opacity: 0.9;
+        margin-top: 0.25rem;
+      }
+    }
+  }
+}
+
+.table-container {
+  padding: 1.5rem;
+
+  .price {
+    font-weight: 600;
+    color: #27ae60;
+    font-size: 1.1rem;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  .empty-state {
+    padding: 3rem;
+    text-align: center;
+    color: #6c757d;
+
+    .empty-icon {
+      font-size: 4rem;
+      color: #dee2e6;
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      margin: 0 0 0.5rem 0;
+      color: #495057;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+:host ::ng-deep {
+  .p-datatable {
+    .p-datatable-header {
+      background: #f8f9fa;
+      border: none;
+      padding: 1rem 1.5rem;
+    }
+
+    .p-datatable-thead > tr > th {
+      background: #f8f9fa;
+      border: none;
+      border-bottom: 2px solid #dee2e6;
+      padding: 1rem;
+      font-weight: 600;
+      color: #495057;
+    }
+
+    .p-datatable-tbody > tr > td {
+      padding: 1rem;
+      border: none;
+      border-bottom: 1px solid #f1f3f4;
+    }
+
+    .p-datatable-tbody > tr:hover {
+      background: #f8f9fa;
+    }
+  }
+
+  .p-paginator {
+    border: none;
+    background: #f8f9fa;
+    padding: 1rem 1.5rem;
+  }
+}

@@ -1,0 +1,133 @@
+<div class="page-container">
+  <!-- Cabeçalho da página -->
+  <div class="page-header">
+    <div>
+      <h1>Detalhes do Produto</h1>
+      <div class="breadcrumb">
+        <i class="pi pi-home"></i>
+        <span>Início / Produtos / Detalhes</span>
+      </div>
+    </div>
+    <div class="header-actions" *ngIf="produto">
+      <button
+        pButton
+        type="button"
+        label="Editar"
+        icon="pi pi-pencil"
+        class="p-button-warning"
+        (click)="onEditar()"
+      ></button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="carregando" class="loading-container">
+    <i class="pi pi-spin pi-spinner loading-icon"></i>
+    <p>Carregando produto...</p>
+  </div>
+
+  <!-- Detalhes do produto -->
+  <div *ngIf="!carregando && produto" class="page-content">
+    <div class="detail-container">
+      <!-- Card principal -->
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-info">
+            <h2>{{ produto.nome }}</h2>
+            <p-tag
+              [value]="produto.disponivel ? 'Disponível' : 'Indisponível'"
+              [severity]="produto.disponivel ? 'success' : 'danger'"
+              class="status-tag"
+            >
+            </p-tag>
+          </div>
+          <div class="product-price">
+            <span class="price-label">Preço</span>
+            <span class="price-value">{{
+              produto.preco | currency : "BRL" : "symbol" : "1.2-2"
+            }}</span>
+          </div>
+        </div>
+
+        <div class="product-details">
+          <div class="detail-grid">
+            <div class="detail-item">
+              <label>ID do Produto</label>
+              <span class="detail-value">{{ produto.id }}</span>
+            </div>
+
+            <div class="detail-item">
+              <label>Nome</label>
+              <span class="detail-value">{{ produto.nome }}</span>
+            </div>
+
+            <div class="detail-item">
+              <label>Preço</label>
+              <span class="detail-value price">{{
+                produto.preco | currency : "BRL" : "symbol" : "1.2-2"
+              }}</span>
+            </div>
+
+            <div class="detail-item">
+              <label>Status</label>
+              <div class="status-container">
+                <i
+                  class="pi"
+                  [class]="
+                    produto.disponivel
+                      ? 'pi-check-circle status-icon success'
+                      : 'pi-times-circle status-icon danger'
+                  "
+                ></i>
+                <span class="detail-value">{{
+                  produto.disponivel ? "Disponível" : "Indisponível"
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Informações adicionais -->
+        <div class="additional-info">
+          <h3>Informações Adicionais</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <i class="pi pi-calendar info-icon"></i>
+              <div>
+                <label>Data de Visualização</label>
+                <span>{{ dataAtual | date : "dd/MM/yyyy HH:mm" }}</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <i class="pi pi-tag info-icon"></i>
+              <div>
+                <label>Categoria</label>
+                <span>Produto Geral</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ações -->
+        <div class="product-actions">
+          <button
+            pButton
+            type="button"
+            label="Voltar"
+            icon="pi pi-arrow-left"
+            class="p-button-secondary"
+            (click)="onVoltar()"
+          ></button>
+          <button
+            pButton
+            type="button"
+            label="Editar Produto"
+            icon="pi pi-pencil"
+            class="p-button-warning"
+            (click)="onEditar()"
+          ></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
