@@ -1,0 +1,219 @@
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+  color: #6c757d;
+
+  .loading-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #3498db;
+  }
+
+  p {
+    font-size: 1.1rem;
+    margin: 0;
+  }
+}
+
+.detail-container {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+
+  .product-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+
+    .product-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+
+      .product-info {
+        h2 {
+          margin: 0 0 1rem 0;
+          font-size: 2rem;
+          font-weight: 700;
+        }
+
+        .status-tag {
+          font-size: 0.9rem;
+          padding: 0.5rem 1rem;
+        }
+      }
+
+      .product-price {
+        text-align: right;
+
+        .price-label {
+          display: block;
+          font-size: 0.9rem;
+          opacity: 0.8;
+          margin-bottom: 0.5rem;
+        }
+
+        .price-value {
+          font-size: 2.5rem;
+          font-weight: 700;
+          line-height: 1;
+        }
+      }
+    }
+
+    .product-details {
+      padding: 2rem;
+
+      .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+
+        .detail-item {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+
+          label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+
+          .detail-value {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #2c3e50;
+
+            &.price {
+              color: #27ae60;
+              font-weight: 600;
+              font-size: 1.3rem;
+            }
+          }
+
+          .status-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            .status-icon {
+              font-size: 1.2rem;
+
+              &.success {
+                color: #27ae60;
+              }
+
+              &.danger {
+                color: #e74c3c;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .additional-info {
+      padding: 0 2rem 2rem 2rem;
+      border-top: 1px solid #f1f3f4;
+      margin-top: 1rem;
+
+      h3 {
+        margin: 1.5rem 0 1rem 0;
+        color: #2c3e50;
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+
+        .info-item {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding: 1rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+
+          .info-icon {
+            font-size: 1.5rem;
+            color: #3498db;
+            width: 40px;
+            text-align: center;
+          }
+
+          div {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+
+            label {
+              font-size: 0.8rem;
+              font-weight: 600;
+              color: #6c757d;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+            }
+
+            span {
+              font-size: 0.95rem;
+              color: #2c3e50;
+              font-weight: 500;
+            }
+          }
+        }
+      }
+    }
+
+    .product-actions {
+      padding: 2rem;
+      background: #f8f9fa;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+
+      button {
+        min-width: 140px;
+      }
+    }
+  }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .detail-container {
+    padding: 1rem;
+
+    .product-card {
+      .product-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+
+        .product-price {
+          text-align: center;
+        }
+      }
+
+      .product-actions {
+        flex-direction: column;
+
+        button {
+          width: 100%;
+        }
+      }
+    }
+  }
+}

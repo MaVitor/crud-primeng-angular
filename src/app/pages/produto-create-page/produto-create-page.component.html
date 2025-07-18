@@ -1,0 +1,95 @@
+<div class="page-container">
+  <!-- Cabeçalho da página -->
+  <div class="page-header">
+    <div>
+      <h1>Novo Produto</h1>
+      <div class="breadcrumb">
+        <i class="pi pi-home"></i>
+        <span>Início / Produtos / Novo</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulário -->
+  <div class="page-content">
+    <div class="form-container">
+      <form #produtoForm="ngForm" (ngSubmit)="onSalvar()">
+        <div class="form-grid">
+          <!-- Nome do produto -->
+          <div class="form-field">
+            <label for="nome">Nome do Produto *</label>
+            <input 
+              pInputText 
+              id="nome"
+              name="nome"
+              [(ngModel)]="produto.nome"
+              #nome="ngModel"
+              required
+              placeholder="Digite o nome do produto"
+              [class.ng-invalid]="nome.invalid && nome.touched">
+            <small class="p-error" *ngIf="nome.invalid && nome.touched">
+              Nome é obrigatório
+            </small>
+          </div>
+
+          <!-- Preço -->
+          <div class="form-field">
+            <label for="preco">Preço *</label>
+            <p-inputNumber
+              id="preco"
+              name="preco"
+              [(ngModel)]="produto.preco"
+              #preco="ngModel"
+              required
+              mode="currency"
+              currency="BRL"
+              locale="pt-BR"
+              [min]="0.01"
+              placeholder="0,00"
+              [class.ng-invalid]="preco.invalid && preco.touched">
+            </p-inputNumber>
+            <small class="p-error" *ngIf="preco.invalid && preco.touched">
+              Preço é obrigatório e deve ser maior que zero
+            </small>
+          </div>
+
+          <!-- Status -->
+          <div class="form-field">
+            <label for="disponivel">Status</label>
+            <div class="status-field">
+              <p-inputSwitch
+                id="disponivel"
+                name="disponivel"
+                [(ngModel)]="produto.disponivel">
+              </p-inputSwitch>
+              <span class="status-label">
+                {{ produto.disponivel ? 'Disponível' : 'Indisponível' }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botões de ação -->
+        <div class="form-actions">
+          <button 
+            pButton 
+            type="button"
+            label="Cancelar"
+            icon="pi pi-times"
+            class="p-button-secondary"
+            (click)="onCancelar()">
+          </button>
+          <button 
+            pButton 
+            type="submit"
+            label="Salvar Produto"
+            icon="pi pi-check"
+            class="p-button-success"
+            [loading]="salvando"
+            [disabled]="produtoForm.invalid || salvando">
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

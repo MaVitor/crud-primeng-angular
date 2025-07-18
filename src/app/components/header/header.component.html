@@ -1,0 +1,25 @@
+<div class="header-container">
+  <p-toolbar>
+    <div class="p-toolbar-group-start">
+      <button 
+        pButton 
+        type="button" 
+        class="p-button-text logo-button"
+        (click)="navigateHome()">
+        <i class="pi pi-shopping-cart"></i>
+        <span class="logo-text">Sistema de Produtos</span>
+      </button>
+    </div>
+    
+    <div class="p-toolbar-group-center">
+      <p-menubar [model]="items"></p-menubar>
+    </div>
+    
+    <div class="p-toolbar-group-end">
+      <span class="user-info">
+        <i class="pi pi-user"></i>
+        Administrador
+      </span>
+    </div>
+  </p-toolbar>
+</div>

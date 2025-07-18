@@ -1,0 +1,55 @@
+.header-container {
+  margin-bottom: 0;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+
+  .logo-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2c3e50 !important;
+
+    i {
+      font-size: 1.5rem;
+      color: #3498db;
+    }
+
+    .logo-text {
+      font-size: 1.1rem;
+    }
+
+    &:hover {
+      background-color: #f8f9fa !important;
+    }
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6c757d;
+    font-size: 0.9rem;
+
+    i {
+      color: #3498db;
+    }
+  }
+}
+
+:host ::ng-deep {
+  .p-toolbar {
+    border: none;
+    border-radius: 0;
+    padding: 1rem 2rem;
+  }
+
+  .p-menubar {
+    border: none;
+    background: transparent;
+
+    .p-menubar-root-list {
+      background: transparent;
+    }
+  }
+}
