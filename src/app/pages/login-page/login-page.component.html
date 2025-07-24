@@ -1,0 +1,83 @@
+<div class="login-container">
+  <div class="login-card">
+    <!-- Logo e título -->
+    <div class="login-header">
+      <div class="logo">
+        <i class="pi pi-shopping-cart"></i>
+      </div>
+      <h1>Sistema de Produtos</h1>
+      <p>Faça login para acessar o sistema</p>
+    </div>
+
+    <!-- Formulário de login -->
+    <form #loginForm="ngForm" (ngSubmit)="onLogin()" class="login-form">
+      <div class="form-field">
+        <label for="username">
+          <i class="pi pi-user"></i>
+          Usuário
+        </label>
+        <input
+          pInputText
+          id="username"
+          name="username"
+          [(ngModel)]="credentials.username"
+          #username="ngModel"
+          required
+          placeholder="Digite seu usuário"
+          [class.ng-invalid]="username.invalid && username.touched"
+          autocomplete="username">
+        <small class="p-error" *ngIf="username.invalid && username.touched">
+          Usuário é obrigatório
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label for="password">
+          <i class="pi pi-lock"></i>
+          Senha
+        </label>
+        <p-password
+          id="password"
+          name="password"
+          [(ngModel)]="credentials.password"
+          #password="ngModel"
+          required
+          placeholder="Digite sua senha"
+          [toggleMask]="true"
+          [feedback]="false"
+          [class.ng-invalid]="password.invalid && password.touched"
+          autocomplete="current-password">
+        </p-password>
+        <small class="p-error" *ngIf="password.invalid && password.touched">
+          Senha é obrigatória
+        </small>
+      </div>
+
+      <!-- Botão de login -->
+      <button
+        pButton
+        type="submit"
+        label="Entrar"
+        icon="pi pi-sign-in"
+        class="login-button"
+        [loading]="loading"
+        [disabled]="loginForm.invalid || loading">
+      </button>
+    </form>
+
+    <!-- Informações adicionais -->
+    <div class="login-footer">
+      <p class="demo-info">
+        <i class="pi pi-info-circle"></i>
+        Para demonstração, use qualquer usuário e senha
+      </p>
+    </div>
+  </div>
+
+  <!-- Background decorativo -->
+  <div class="background-decoration">
+    <div class="decoration-circle circle-1"></div>
+    <div class="decoration-circle circle-2"></div>
+    <div class="decoration-circle circle-3"></div>
+  </div>
+</div>
