@@ -1,41 +1,39 @@
 <div class="header-container">
   <p-toolbar>
     <div class="p-toolbar-group-start">
-      <button 
-        pButton 
-        type="button" 
+      <button
+        pButton
+        type="button"
         class="p-button-text logo-button"
         (click)="navigateHome()">
         <i class="pi pi-shopping-cart"></i>
         <span class="logo-text">Sistema de Produtos</span>
       </button>
     </div>
-    
+
     <div class="p-toolbar-group-center" *ngIf="isAuthenticated">
       <p-menubar [model]="items"></p-menubar>
     </div>
-    
+
     <div class="p-toolbar-group-end">
-      <!-- Usuário autenticado -->
       <div *ngIf="isAuthenticated && currentUser" class="user-menu">
-        <button 
-          pButton 
-          type="button" 
+        <button
+          pButton
+          type="button"
           class="p-button-text user-button"
           (click)="userMenu.toggle($event)">
           <i class="pi pi-user"></i>
           <span>{{ currentUser.first_name || currentUser.username }}</span>
           <i class="pi pi-chevron-down"></i>
         </button>
-        
+
         <p-menu #userMenu [model]="userMenuItems" [popup]="true"></p-menu>
       </div>
-      
-      <!-- Usuário não autenticado -->
+
       <div *ngIf="!isAuthenticated" class="auth-actions">
-        <button 
-          pButton 
-          type="button" 
+        <button
+          pButton
+          type="button"
           label="Login"
           icon="pi pi-sign-in"
           class="p-button-outlined"
