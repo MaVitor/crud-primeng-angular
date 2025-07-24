@@ -1,0 +1,250 @@
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-card {
+  background: white;
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+  z-index: 2;
+  backdrop-filter: blur(10px);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+
+  .logo {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+
+    i {
+      font-size: 2rem;
+      color: white;
+    }
+  }
+
+  h1 {
+    color: #2c3e50;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+  }
+
+  p {
+    color: #6c757d;
+    font-size: 1rem;
+    margin: 0;
+  }
+}
+
+.login-form {
+  .form-field {
+    margin-bottom: 1.5rem;
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      color: #495057;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+
+      i {
+        color: #667eea;
+        font-size: 1rem;
+      }
+    }
+
+    input, :host ::ng-deep .p-password {
+      width: 100%;
+    }
+
+    small.p-error {
+      color: #e74c3c;
+      font-size: 0.8rem;
+      margin-top: 0.25rem;
+      display: block;
+    }
+  }
+
+  .login-button {
+    width: 100%;
+    padding: 0.875rem;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 1rem;
+
+    ::ng-deep {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+      border: none !important;
+      border-radius: 12px !important;
+      transition: all 0.3s ease !important;
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4) !important;
+      }
+
+      &:disabled {
+        opacity: 0.6 !important;
+      }
+    }
+  }
+}
+
+.login-footer {
+  margin-top: 2rem;
+  text-align: center;
+
+  .demo-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #6c757d;
+    font-size: 0.85rem;
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 0;
+
+    i {
+      color: #3498db;
+    }
+  }
+}
+
+.background-decoration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  overflow: hidden;
+
+  .decoration-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+
+    &.circle-1 {
+      width: 300px;
+      height: 300px;
+      top: -150px;
+      right: -150px;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    &.circle-2 {
+      width: 200px;
+      height: 200px;
+      bottom: -100px;
+      left: -100px;
+      animation: float 8s ease-in-out infinite reverse;
+    }
+
+    &.circle-3 {
+      width: 150px;
+      height: 150px;
+      top: 50%;
+      left: -75px;
+      animation: float 10s ease-in-out infinite;
+    }
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+// Estilos globais para o componente
+:host ::ng-deep {
+  .p-inputtext, .p-password input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+
+    &:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+
+    &.ng-invalid.ng-touched {
+      border-color: #e74c3c;
+      box-shadow: 0 0 0 0.2rem rgba(231, 76, 60, 0.25);
+    }
+  }
+
+  .p-password {
+    .p-password-input {
+      width: 100%;
+      padding-right: 3rem;
+    }
+
+    .p-password-toggle {
+      right: 1rem;
+      color: #6c757d;
+
+      &:hover {
+        color: #667eea;
+      }
+    }
+  }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .login-container {
+    padding: 1rem;
+  }
+
+  .login-card {
+    padding: 2rem;
+    border-radius: 16px;
+  }
+
+  .login-header {
+    .logo {
+      width: 60px;
+      height: 60px;
+
+      i {
+        font-size: 1.5rem;
+      }
+    }
+
+    h1 {
+      font-size: 1.5rem;
+    }
+  }
+}

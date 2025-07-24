@@ -2,10 +2,13 @@ import { NgModule } from "@angular/core"
 import { BrowserModule } from "@angular/platform-browser"
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
 import { FormsModule } from "@angular/forms"
-import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http"
+import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS } from "@angular/common/http"
 
 // Módulo de rotas
 import { AppRoutingModule } from "./app-routing.module"
+
+// Interceptor de autenticação
+import { AuthInterceptor } from "./interceptors/auth.interceptor"
 
 // Módulos do PrimeNG
 import { TableModule } from "primeng/table"
@@ -23,6 +26,8 @@ import { MessagesModule } from "primeng/messages"
 import { MessageModule } from "primeng/message"
 import { MenubarModule } from "primeng/menubar"
 import { ToolbarModule } from "primeng/toolbar"
+import { MenuModule } from "primeng/menu"
+import { PasswordModule } from "primeng/password"
 
 // Serviços do PrimeNG
 import { MessageService, ConfirmationService } from "primeng/api"
@@ -40,6 +45,7 @@ import { ProdutoListPageComponent } from "./pages/produto-list-page/produto-list
 import { ProdutoCreatePageComponent } from "./pages/produto-create-page/produto-create-page.component"
 import { ProdutoEditPageComponent } from "./pages/produto-edit-page/produto-edit-page.component"
 import { ProdutoDetailPageComponent } from "./pages/produto-detail-page/produto-detail-page.component"
+import { LoginPageComponent } from "./pages/login-page/login-page.component"
 import { HeaderComponent } from "./components/header/header.component"
 
 @NgModule({
@@ -72,15 +78,27 @@ import { HeaderComponent } from "./components/header/header.component"
     MessagesModule,
     MenubarModule,
     ToolbarModule,
+    MenuModule,
+    PasswordModule,
 
     // Componentes Standalone são importados como se fossem módulos
     ProdutoListPageComponent,
     ProdutoCreatePageComponent,
     ProdutoEditPageComponent,
     ProdutoDetailPageComponent,
+    LoginPageComponent,
     HeaderComponent,
   ],
-  providers: [MessageService, ConfirmationService, provideHttpClient(withInterceptorsFromDi())],
+  providers: [
+    MessageService,
+    ConfirmationService,
+    provideHttpClient(withInterceptorsFromDi()),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
