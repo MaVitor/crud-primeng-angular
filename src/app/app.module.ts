@@ -40,13 +40,12 @@ import { ProdutoFormComponent } from "./components/produto-form/produto-form.com
 import { ProdutoDetailComponent } from "./components/produto-detail/produto-detail.component"
 import { ProdutoDeleteComponent } from "./components/produto-delete/produto-delete.component"
 
-// Componentes Standalone (Páginas e Header)
+// Componentes Standalone (Páginas) - REMOVIDO HeaderComponent
 import { ProdutoListPageComponent } from "./pages/produto-list-page/produto-list-page.component"
 import { ProdutoCreatePageComponent } from "./pages/produto-create-page/produto-create-page.component"
 import { ProdutoEditPageComponent } from "./pages/produto-edit-page/produto-edit-page.component"
 import { ProdutoDetailPageComponent } from "./pages/produto-detail-page/produto-detail-page.component"
 import { LoginPageComponent } from "./pages/login-page/login-page.component"
-import { HeaderComponent } from "./components/header/header.component"
 
 @NgModule({
   declarations: [
@@ -81,13 +80,12 @@ import { HeaderComponent } from "./components/header/header.component"
     MenuModule,
     PasswordModule,
 
-    // Componentes Standalone são importados como se fossem módulos
+    // Componentes Standalone - REMOVIDO HeaderComponent
     ProdutoListPageComponent,
     ProdutoCreatePageComponent,
     ProdutoEditPageComponent,
     ProdutoDetailPageComponent,
     LoginPageComponent,
-    HeaderComponent,
   ],
   providers: [
     MessageService,

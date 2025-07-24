@@ -24,7 +24,11 @@
     }
   }
 
-  .user-menu {
+  .user-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
     .user-button {
       display: flex;
       align-items: center;
@@ -47,6 +51,20 @@
       i:last-child {
         font-size: 0.8rem;
         color: #6c757d;
+      }
+    }
+
+    .logout-button {
+      border-color: #e74c3c;
+      color: #e74c3c;
+      font-weight: 500;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: #e74c3c;
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
       }
     }
   }

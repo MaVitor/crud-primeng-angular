@@ -16,7 +16,8 @@
     </div>
 
     <div class="p-toolbar-group-end">
-      <div *ngIf="isAuthenticated && currentUser" class="user-menu">
+      <!-- Menu do usuário quando logado -->
+      <div *ngIf="isAuthenticated && currentUser" class="user-section">
         <button
           pButton
           type="button"
@@ -28,8 +29,19 @@
         </button>
 
         <p-menu #userMenu [model]="userMenuItems" [popup]="true"></p-menu>
+
+        <!-- Botão de logout direto -->
+        <button
+          pButton
+          type="button"
+          label="Logout"
+          icon="pi pi-sign-out"
+          class="p-button-outlined p-button-danger logout-button"
+          (click)="logout()">
+        </button>
       </div>
 
+      <!-- Botão de login quando NÃO logado -->
       <div *ngIf="!isAuthenticated" class="auth-actions">
         <button
           pButton

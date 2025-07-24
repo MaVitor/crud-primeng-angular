@@ -95,6 +95,15 @@
   }
 }
 
+.logout-btn {
+  margin-right: 1rem;
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+  }
+}
+
 :host ::ng-deep {
   .p-datatable {
     .p-datatable-header {
