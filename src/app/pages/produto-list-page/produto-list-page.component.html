@@ -1,3 +1,5 @@
+<p-toast></p-toast>
+
 <div class="page-container">
   <!-- Cabeçalho da página -->
   <div class="page-header">
@@ -9,6 +11,11 @@
       </div>
     </div>
     <div class="header-actions">
+      <div class="user-info">
+        <i class="pi pi-user"></i>
+        <span class="username" *ngIf="nomeUsuario">{{ nomeUsuario }}</span>
+        <span class="username" *ngIf="!nomeUsuario">Visitante</span>
+      </div>
       <button 
         pButton 
         type="button" 

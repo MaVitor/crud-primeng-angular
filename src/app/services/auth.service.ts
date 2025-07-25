@@ -22,22 +22,25 @@ export class AuthService {
     private router: Router,
     private messageService: MessageService,
   ) {
-    // Lógica de inicialização robusta do localStorage
-    const storedUser = localStorage.getItem("currentUser");
-    let user: User | null = null;
+    this.currentUserSubject = new BehaviorSubject<User | null>(null);
+    this.currentUser = this.currentUserSubject.asObservable();
 
-    if (storedUser && storedUser !== "undefined" && storedUser !== "null") {
+    // Tentar recuperar o usuário do localStorage
+    const storedUser = localStorage.getItem("currentUser");
+    if (storedUser) {
       try {
-        user = JSON.parse(storedUser);
+        const user = JSON.parse(storedUser);
+        if (user && user.username) {
+          this.currentUserSubject.next(user);
+          console.log('Usuário recuperado do localStorage:', user);
+        }
       } catch (error) {
         console.error("Erro ao parsear usuário do localStorage:", error);
         localStorage.removeItem("currentUser");
       }
     }
 
-    this.currentUserSubject = new BehaviorSubject<User | null>(user);
-    this.currentUser = this.currentUserSubject.asObservable();
-
+    // Se estiver autenticado, buscar dados atualizados do usuário
     if (this.isAuthenticated()) {
       this.startTokenRefreshTimer();
     }
@@ -45,6 +48,11 @@ export class AuthService {
 
   public get currentUserValue(): User | null {
     return this.currentUserSubject.value;
+  }
+
+  public getUsuarioLogado(): string | null {
+    const user = this.currentUserValue;
+    return user ? (user.first_name || user.username) : null;
   }
 
   public isAuthenticated(): boolean {
@@ -65,26 +73,44 @@ export class AuthService {
   public login(credentials: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login/`, credentials).pipe(
       tap((response) => {
+        console.log('Resposta do login:', response);
+        
+        // Armazenar tokens
         localStorage.setItem("accessToken", response.access);
         localStorage.setItem("refreshToken", response.refresh);
 
-        if (response.user) {
-          localStorage.setItem("currentUser", JSON.stringify(response.user));
-          this.currentUserSubject.next(response.user);
-        } else {
-          localStorage.removeItem("currentUser");
-          this.currentUserSubject.next(null);
-        }
+        // Criar um usuário temporário com o username do login
+        const tempUser: User = {
+          id: 0,
+          username: credentials.username,
+          email: '',
+          first_name: '',
+          last_name: ''
+        };
+        
+        // Armazenar usuário temporário
+        localStorage.setItem("currentUser", JSON.stringify(tempUser));
+        this.currentUserSubject.next(tempUser);
+        
+        // Buscar dados completos do usuário
+        this.http.get<User>(`${this.apiUrl}/user/`).subscribe({
+          next: (user) => {
+            console.log('Dados completos do usuário:', user);
+            localStorage.setItem("currentUser", JSON.stringify(user));
+            this.currentUserSubject.next(user);
+            
+            this.messageService.add({
+              severity: "success",
+              summary: "Login realizado",
+              detail: `Bem-vindo, ${user.username}!`,
+            });
+          },
+          error: (error) => {
+            console.error('Erro ao buscar dados do usuário:', error);
+          }
+        });
 
         this.startTokenRefreshTimer();
-
-        if (response.user) {
-          this.messageService.add({
-            severity: "success",
-            summary: "Login realizado",
-            detail: `Bem-vindo, ${response.user.first_name || response.user.username}!`,
-          });
-        }
       }),
       catchError((error) => {
         this.messageService.add({

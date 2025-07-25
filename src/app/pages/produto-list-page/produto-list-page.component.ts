@@ -34,6 +34,7 @@ import { CardModule } from "primeng/card"
 export class ProdutoListPageComponent implements OnInit {
   produtos: Produto[] = []
   loading = false
+  nomeUsuario: string | null = null
 
   constructor(
     private produtoHttpService: ProdutoHttpService,
@@ -44,7 +45,36 @@ export class ProdutoListPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.carregarProdutos()
+    // Verificar autenticação
+    if (!this.authService.isAuthenticated()) {
+      console.log('Usuário não autenticado, redirecionando para login');
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    // Carregar dados iniciais
+    this.carregarProdutos();
+    
+    // Observar mudanças no usuário
+    this.authService.currentUser.subscribe({
+      next: (user) => {
+        console.log('Estado do usuário atualizado:', user);
+        if (user && user.username) {
+          this.nomeUsuario = user.username;
+          console.log('Nome do usuário definido:', this.nomeUsuario);
+        } else {
+          this.nomeUsuario = null;
+          console.log('Usuário não encontrado');
+          if (!this.authService.isAuthenticated()) {
+            this.router.navigate(['/login']);
+          }
+        }
+      },
+      error: (error) => {
+        console.error('Erro ao observar usuário:', error);
+        this.nomeUsuario = null;
+      }
+    });
   }
 
   // Carregar lista de produtos
