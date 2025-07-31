@@ -5,14 +5,14 @@ import { catchError, tap } from "rxjs/operators";
 import { Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { LoginRequest, LoginResponse, User, RefreshTokenRequest, RefreshTokenResponse } from "../models/auth";
+import { environment } from "../../environments/enviroment"; // <<< MUDANÇA FINAL AQUI
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
-  // CORREÇÃO: URL da API dinâmica para funcionar no Codespace e localmente
-  private apiUrl = `${window.location.protocol}//${window.location.hostname.replace('4200', '8000')}/api/auth`;
-  
+  private apiUrl = `${environment.apiUrl}/auth`;
+
   private currentUserSubject: BehaviorSubject<User | null>;
   public currentUser: Observable<User | null>;
   private tokenRefreshTimer: any;
@@ -25,14 +25,12 @@ export class AuthService {
     this.currentUserSubject = new BehaviorSubject<User | null>(null);
     this.currentUser = this.currentUserSubject.asObservable();
 
-    // Tentar recuperar o usuário do localStorage
     const storedUser = localStorage.getItem("currentUser");
     if (storedUser) {
       try {
         const user = JSON.parse(storedUser);
         if (user && user.username) {
           this.currentUserSubject.next(user);
-          console.log('Usuário recuperado do localStorage:', user);
         }
       } catch (error) {
         console.error("Erro ao parsear usuário do localStorage:", error);
@@ -40,7 +38,6 @@ export class AuthService {
       }
     }
 
-    // Se estiver autenticado, buscar dados atualizados do usuário
     if (this.isAuthenticated()) {
       this.startTokenRefreshTimer();
     }
@@ -57,10 +54,7 @@ export class AuthService {
 
   public isAuthenticated(): boolean {
     const token = this.getToken();
-    if (!token) {
-      return false;
-    }
-
+    if (!token) return false;
     try {
       const payload = JSON.parse(atob(token.split(".")[1]));
       const currentTime = Math.floor(Date.now() / 1000);
@@ -73,41 +67,19 @@ export class AuthService {
   public login(credentials: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login/`, credentials).pipe(
       tap((response) => {
-        console.log('Resposta do login:', response);
-        
-        // Armazenar tokens
         localStorage.setItem("accessToken", response.access);
         localStorage.setItem("refreshToken", response.refresh);
 
-        // Criar um usuário temporário com o username do login
-        const tempUser: User = {
-          id: 0,
-          username: credentials.username,
-          email: '',
-          first_name: '',
-          last_name: ''
-        };
-        
-        // Armazenar usuário temporário
-        localStorage.setItem("currentUser", JSON.stringify(tempUser));
-        this.currentUserSubject.next(tempUser);
-        
-        // Buscar dados completos do usuário
         this.http.get<User>(`${this.apiUrl}/user/`).subscribe({
           next: (user) => {
-            console.log('Dados completos do usuário:', user);
             localStorage.setItem("currentUser", JSON.stringify(user));
             this.currentUserSubject.next(user);
-            
             this.messageService.add({
               severity: "success",
               summary: "Login realizado",
-              detail: `Bem-vindo, ${user.username}!`,
+              detail: `Bem-vindo, ${user.first_name || user.username}!`,
             });
           },
-          error: (error) => {
-            console.error('Erro ao buscar dados do usuário:', error);
-          }
         });
 
         this.startTokenRefreshTimer();
@@ -116,7 +88,7 @@ export class AuthService {
         this.messageService.add({
           severity: "error",
           summary: "Erro no login",
-          detail: "Credenciais inválidas",
+          detail: "Credenciais inválidas ou erro no servidor.",
         });
         return throwError(() => error);
       }),
@@ -165,6 +137,7 @@ export class AuthService {
   }
 
   private startTokenRefreshTimer(): void {
+    this.stopTokenRefreshTimer();
     const token = this.getToken();
     if (!token) return;
     try {
@@ -177,9 +150,11 @@ export class AuthService {
             error: () => this.logout(),
           });
         }, timeout);
+      } else {
+        this.refreshToken().subscribe({ error: () => this.logout() });
       }
     } catch (error) {
-      console.error("Erro ao processar token:", error);
+      console.error("Erro ao processar token para refresh:", error);
     }
   }
 
@@ -188,21 +163,5 @@ export class AuthService {
       clearTimeout(this.tokenRefreshTimer);
       this.tokenRefreshTimer = null;
     }
-  }
-
-  public hasRole(role: string): boolean {
-    const user = this.currentUserValue;
-    return true;
-  }
-
-  public getCurrentUser(): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/user/`).pipe(
-      tap((user) => {
-        if (user) {
-          localStorage.setItem("currentUser", JSON.stringify(user));
-          this.currentUserSubject.next(user);
-        }
-      }),
-    );
   }
 }

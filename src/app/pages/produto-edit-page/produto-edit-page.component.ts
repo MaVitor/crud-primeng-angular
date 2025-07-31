@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { Produto } from "../../models/produto";
@@ -19,7 +19,7 @@ import { ToastModule } from "primeng/toast";
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule, // Importe o ReactiveFormsModule aqui também
     ButtonModule,
     CardModule,
     InputTextModule,
@@ -31,17 +31,13 @@ import { ToastModule } from "primeng/toast";
   styleUrls: ["./produto-edit-page.component.scss"],
 })
 export class ProdutoEditPageComponent implements OnInit {
-  produto: Produto = {
-    nome: "",
-    preco: 0,
-    disponivel: true,
-  };
-
+  produtoForm!: FormGroup;
   produtoId = 0;
   carregando = false;
   salvando = false;
 
   constructor(
+    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private produtoHttpService: ProdutoHttpService,
@@ -49,7 +45,13 @@ export class ProdutoEditPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Obter ID do produto da rota
+    this.produtoForm = this.fb.group({
+      id: [null],
+      nome: ["", [Validators.required, Validators.minLength(3)]],
+      preco: [0, [Validators.required, Validators.min(0.01)]],
+      disponivel: [true],
+    });
+
     this.produtoId = Number(this.route.snapshot.paramMap.get("id"));
     if (this.produtoId) {
       this.carregarProduto();
@@ -63,12 +65,11 @@ export class ProdutoEditPageComponent implements OnInit {
     }
   }
 
-  // Carregar dados do produto
   carregarProduto(): void {
     this.carregando = true;
     this.produtoHttpService.getProdutoById(this.produtoId).subscribe({
       next: (produto) => {
-        this.produto = produto;
+        this.produtoForm.patchValue(produto); // Popula o formulário com os dados do produto
         this.carregando = false;
       },
       error: (error) => {
@@ -82,19 +83,30 @@ export class ProdutoEditPageComponent implements OnInit {
     });
   }
 
-  // Salvar alterações
   onSalvar(): void {
-    if (!this.validarFormulario()) {
+    if (this.produtoForm.invalid) {
+      Object.values(this.produtoForm.controls).forEach(control => {
+        control.markAsDirty();
+        control.updateValueAndValidity();
+      });
+      
+      this.messageService.add({
+        severity: "warn",
+        summary: "Atenção",
+        detail: "Preencha os campos obrigatórios!",
+      });
       return;
     }
 
     this.salvando = true;
-    this.produtoHttpService.updateProduto(this.produto).subscribe({
+    const produto: Produto = this.produtoForm.value;
+
+    this.produtoHttpService.updateProduto(produto).subscribe({
       next: (produtoAtualizado) => {
         this.messageService.add({
           severity: "success",
           summary: "Sucesso",
-          detail: `Produto "${this.produto.nome}" atualizado com sucesso!`,
+          detail: `Produto "${produto.nome}" atualizado com sucesso!`,
         });
         this.router.navigate(["/produtos"]);
       },
@@ -102,38 +114,22 @@ export class ProdutoEditPageComponent implements OnInit {
         this.messageService.add({
           severity: "error",
           summary: "Erro",
-          detail: "Erro ao atualizar produto",
+          detail: "Erro ao atualizar produto. Tente novamente.",
         });
         this.salvando = false;
       },
     });
   }
 
-  // Cancelar e voltar
   onCancelar(): void {
     this.router.navigate(["/produtos"]);
   }
 
-  // Validar formulário
-  private validarFormulario(): boolean {
-    if (!this.produto.nome.trim()) {
-      this.messageService.add({
-        severity: "warn",
-        summary: "Atenção",
-        detail: "Nome do produto é obrigatório!",
-      });
-      return false;
-    }
+  get nome() {
+    return this.produtoForm.get('nome');
+  }
 
-    if (this.produto.preco <= 0) {
-      this.messageService.add({
-        severity: "warn",
-        summary: "Atenção",
-        detail: "Preço deve ser maior que zero!",
-      });
-      return false;
-    }
-
-    return true;
+  get preco() {
+    return this.produtoForm.get('preco');
   }
 }

@@ -1,5 +1,4 @@
 <div class="page-container">
-  <!-- Cabeçalho da página -->
   <div class="page-header">
     <div>
       <h1>Editar Produto</h1>
@@ -10,94 +9,82 @@
     </div>
   </div>
 
-  <!-- Loading -->
   <div *ngIf="carregando" class="loading-container">
     <i class="pi pi-spin pi-spinner loading-icon"></i>
     <p>Carregando produto...</p>
   </div>
 
-  <!-- Formulário -->
   <div *ngIf="!carregando" class="page-content">
     <div class="form-container">
-      <form #produtoForm="ngForm" (ngSubmit)="onSalvar()">
+      <form [formGroup]="produtoForm" (ngSubmit)="onSalvar()">
         <div class="form-grid">
-          <!-- ID do produto (readonly) -->
           <div class="form-field">
             <label for="id">ID</label>
-            <input 
-              pInputText 
+            <input
+              pInputText
               id="id"
-              [value]="produto.id"
+              formControlName="id"
               readonly
               class="readonly-field">
           </div>
 
-          <!-- Nome do produto -->
           <div class="form-field">
             <label for="nome">Nome do Produto *</label>
-            <input 
-              pInputText 
+            <input
+              pInputText
               id="nome"
-              name="nome"
-              [(ngModel)]="produto.nome"
-              #nome="ngModel"
-              required
+              formControlName="nome"
               placeholder="Digite o nome do produto"
-              [class.ng-invalid]="nome.invalid && nome.touched">
-            <small class="p-error" *ngIf="nome.invalid && nome.touched">
-              Nome é obrigatório
+              [ngClass]="{'ng-invalid ng-dirty': nome?.invalid && (nome?.dirty || nome?.touched)}">
+            <small class="p-error" *ngIf="nome?.invalid && (nome?.dirty || nome?.touched)">
+              <span *ngIf="nome?.errors?.['required']">Nome é obrigatório.</span>
+              <span *ngIf="nome?.errors?.['minlength']">O nome deve ter no mínimo 3 caracteres.</span>
             </small>
           </div>
 
-          <!-- Preço -->
           <div class="form-field">
             <label for="preco">Preço *</label>
             <p-inputNumber
               id="preco"
-              name="preco"
-              [(ngModel)]="produto.preco"
-              #preco="ngModel"
-              required
+              formControlName="preco"
               mode="currency"
               currency="BRL"
               locale="pt-BR"
               [min]="0.01"
               placeholder="0,00"
-              [class.ng-invalid]="preco.invalid && preco.touched">
+              [ngClass]="{'ng-invalid ng-dirty': preco?.invalid && (preco?.dirty || preco?.touched)}">
             </p-inputNumber>
-            <small class="p-error" *ngIf="preco.invalid && preco.touched">
-              Preço é obrigatório e deve ser maior que zero
+            <small class="p-error" *ngIf="preco?.invalid && (preco?.dirty || preco?.touched)">
+              <span *ngIf="preco?.errors?.['required']">Preço é obrigatório.</span>
+              <span *ngIf="preco?.errors?.['min']">Preço deve ser maior que zero.</span>
             </small>
           </div>
 
-          <!-- Status -->
           <div class="form-field">
             <label for="disponivel">Status</label>
             <div class="status-field">
               <p-inputSwitch
                 id="disponivel"
-                name="disponivel"
-                [(ngModel)]="produto.disponivel">
+                formControlName="disponivel">
               </p-inputSwitch>
               <span class="status-label">
-                {{ produto.disponivel ? 'Disponível' : 'Indisponível' }}
+                {{ produtoForm.get('disponivel')?.value ? 'Disponível' : 'Indisponível' }}
               </span>
             </div>
           </div>
         </div>
 
-        <!-- Botões de ação -->
         <div class="form-actions">
-          <button 
-            pButton 
+          <button
+            pButton
             type="button"
             label="Cancelar"
             icon="pi pi-times"
             class="p-button-secondary"
             (click)="onCancelar()">
           </button>
-          <button 
-            pButton 
+          <button
+            pButton
             type="submit"
             label="Salvar Alterações"
             icon="pi pi-check"

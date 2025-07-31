@@ -1,6 +1,6 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { Produto } from "../../models/produto";
@@ -19,7 +19,7 @@ import { ToastModule } from "primeng/toast";
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule, // Importe o ReactiveFormsModule aqui também
     ButtonModule,
     CardModule,
     InputTextModule,
@@ -30,34 +30,51 @@ import { ToastModule } from "primeng/toast";
   templateUrl: "./produto-create-page.component.html",
   styleUrls: ["./produto-create-page.component.scss"],
 })
-export class ProdutoCreatePageComponent {
-  produto: Produto = {
-    nome: "",
-    preco: 0,
-    disponivel: true,
-  };
-
+export class ProdutoCreatePageComponent implements OnInit {
+  produtoForm!: FormGroup;
   salvando = false;
 
   constructor(
+    private fb: FormBuilder,
     private produtoHttpService: ProdutoHttpService,
     private messageService: MessageService,
     private router: Router
   ) {}
 
+  ngOnInit(): void {
+    this.produtoForm = this.fb.group({
+      nome: ["", [Validators.required, Validators.minLength(3)]],
+      preco: [0, [Validators.required, Validators.min(0.01)]],
+      disponivel: [true],
+    });
+  }
+
   // Salvar novo produto
   onSalvar(): void {
-    if (!this.validarFormulario()) {
+    if (this.produtoForm.invalid) {
+      // Marcar todos os campos como "tocados" para exibir mensagens de erro
+      Object.values(this.produtoForm.controls).forEach(control => {
+        control.markAsDirty();
+        control.updateValueAndValidity();
+      });
+
+      this.messageService.add({
+        severity: "warn",
+        summary: "Atenção",
+        detail: "Preencha os campos obrigatórios!",
+      });
       return;
     }
 
     this.salvando = true;
-    this.produtoHttpService.addProduto(this.produto).subscribe({
+    const produto: Produto = this.produtoForm.value;
+
+    this.produtoHttpService.addProduto(produto).subscribe({
       next: (novoProduto) => {
         this.messageService.add({
           severity: "success",
           summary: "Sucesso",
-          detail: `Produto "${this.produto.nome}" criado com sucesso!`,
+          detail: `Produto "${produto.nome}" criado com sucesso!`,
         });
         this.router.navigate(["/produtos"]);
       },
@@ -65,7 +82,7 @@ export class ProdutoCreatePageComponent {
         this.messageService.add({
           severity: "error",
           summary: "Erro",
-          detail: "Erro ao criar produto",
+          detail: "Erro ao criar produto. Tente novamente.",
         });
         this.salvando = false;
       },
@@ -77,26 +94,12 @@ export class ProdutoCreatePageComponent {
     this.router.navigate(["/produtos"]);
   }
 
-  // Validar formulário
-  private validarFormulario(): boolean {
-    if (!this.produto.nome.trim()) {
-      this.messageService.add({
-        severity: "warn",
-        summary: "Atenção",
-        detail: "Nome do produto é obrigatório!",
-      });
-      return false;
-    }
+  // Acessadores para facilitar o uso no template
+  get nome() {
+    return this.produtoForm.get('nome');
+  }
 
-    if (this.produto.preco <= 0) {
-      this.messageService.add({
-        severity: "warn",
-        summary: "Atenção",
-        detail: "Preço deve ser maior que zero!",
-      });
-      return false;
-    }
-
-    return true;
+  get preco() {
+    return this.produtoForm.get('preco');
   }
 }
